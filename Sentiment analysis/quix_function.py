@@ -2,7 +2,7 @@ import quixstreams as qx
 from transformers import Pipeline
 import pandas as pd
 
-with open('banned_words.txt', 'r') as f:
+with open('banned_words.txt', 'r', encoding='utf-8') as f:
     lines = f.readlines()[9:]  # Skip the first 9 lines
     banned_words = ', '.join(lines).split(', ')
 
