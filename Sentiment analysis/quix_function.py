@@ -2,13 +2,22 @@ import quixstreams as qx
 from transformers import Pipeline
 import pandas as pd
 
+with open('banned_words.txt', 'r') as f:
+    lines = f.readlines()[9:]  # Skip the first 9 lines
+    banned_words = ', '.join(lines).split(', ')
+
+def censor_banned_words(text, banned_words):
+    for word in banned_words:
+        if word in text:
+            text = text.replace(word, '*' * len(word))
+    return text
 
 class QuixFunction:
-    def __init__(self, consumer_stream: qx.StreamConsumer, producer_stream: qx.StreamProducer, classifier: Pipeline):
+    def __init__(self, consumer_stream: qx.StreamConsumer, producer_stream: qx.StreamProducer, producer_stream_sanitized: qx.StreamProducer, classifier: Pipeline):
         self.consumer_stream = consumer_stream
         self.producer_stream = producer_stream
         self.classifier = classifier
-
+        self.producer_stream_sanitized = producer_stream_sanitized  # New
         self.sum = 0
         self.count = 0
 
@@ -32,5 +41,12 @@ class QuixFunction:
             self.sum = self.sum + df.loc[i, "sentiment"]
             df.loc[i, "average_sentiment"] = self.sum/self.count
 
-        # Output data with new features
-        self.producer_stream.timeseries.publish(df)
+            # Output data with new features
+            self.producer_stream.timeseries.publish(df)
+
+            # Sanitize text after sentiment analysis
+            df_sanitized = df.copy()
+            df_sanitized["chat-message"] = df_sanitized["chat-message"].apply(lambda x: censor_banned_words(x, banned_words))
+
+            # Output sanitized data
+            self.producer_stream_sanitized.timeseries.publish(df_sanitized)
