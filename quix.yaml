@@ -42,11 +42,11 @@ deployments:
   - name: Sentiment analysis
     application: Sentiment analysis
     deploymentType: Service
-    version: sa-v1-dev1
+    version: d49be638a568e2d209ec50a8eb2c6e2efbcc1e0f
     resources:
       cpu: 2000
       memory: 4000
-      replicas: 4
+      replicas: 2
     desiredStatus: Running
     variables:
       - name: input
