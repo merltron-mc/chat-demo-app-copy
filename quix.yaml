@@ -9,7 +9,7 @@ deployments:
   - name: Sentiment Demo UI
     application: Sentiment Demo UI
     deploymentType: Service
-    version: 79cd941f819763df990af34481b4918fdd675eab
+    version: cf5cafab5676d760f13d380690996d49938ac6d1
     resources:
       cpu: 1000
       memory: 500
@@ -39,6 +39,11 @@ deployments:
         description: ''
         required: false
         value: drafts_sentiment
+      - name: messages_sanitized
+        inputType: FreeText
+        description: ''
+        required: false
+        value: messages_sanitized
   - name: Sentiment analysis
     application: Sentiment analysis
     deploymentType: Service
