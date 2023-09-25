@@ -17,7 +17,7 @@ consumer_topic = client.get_topic_consumer(
     "sentiment-analysis",
     auto_offset_reset = qx.AutoOffsetReset.Earliest)
 producer_topic = client.get_topic_producer(os.environ["output"])
-producer_topic_sanitized = client.get_topic_producer("output_sanitized")
+producer_topic_sanitized = client.get_topic_producer("sentiment_clean")
 
 # Callback called for each incoming stream
 def read_stream(consumer_stream: qx.StreamConsumer):
