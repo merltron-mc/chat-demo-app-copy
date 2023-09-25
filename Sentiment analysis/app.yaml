@@ -11,6 +11,11 @@ variables:
     description: This is the output for the Hugging Face model score
     defaultValue: sentiment
     required: true
+  - name: output_sanitized
+    inputType: OutputTopic
+    description: ''
+    defaultValue: sentiment_clean
+    required: false
 dockerfile: build/dockerfile
 runEntryPoint: main.py
 defaultFile: quix_function.py
