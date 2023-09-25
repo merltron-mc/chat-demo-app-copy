@@ -22,7 +22,7 @@ variables:
     defaultValue: drafts_sentiment
     required: false
   - name: messages_sanitized
-    inputType: OutputTopic
+    inputType: FreeText
     description: ''
     defaultValue: messages_sanitized
     required: false
