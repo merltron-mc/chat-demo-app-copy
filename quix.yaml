@@ -6,7 +6,7 @@ metadata:
 
 # This section describes the Deployments of the data pipeline
 deployments:
-  - name: Sentiment Demo UI
+  - name: Chat sentiment analysis UI
     application: Sentiment Demo UI
     deploymentType: Service
     version: updatedServers
@@ -16,19 +16,19 @@ deployments:
       replicas: 1
     publicAccess:
       enabled: true
-      urlPrefix: sentimentdemoui-f203bf0
+      urlPrefix: sentimentdemoui
     desiredStatus: Running
     variables:
       - name: sentiment
         inputType: FreeText
         description: The topic to read from
         required: true
-        value: sentiment
+        value: chat-with-sentiment
       - name: messages
         inputType: FreeText
         description: The topic to read from
         required: true
-        value: messages
+        value: chat-messages
       - name: drafts
         inputType: FreeText
         description: ''
@@ -58,7 +58,7 @@ deployments:
         inputType: InputTopic
         description: This is the raw data input topic
         required: true
-        value: messages
+        value: chat-messages
       - name: output
         inputType: OutputTopic
         description: This is the output for the Hugging Face model score
@@ -106,7 +106,7 @@ deployments:
         inputType: InputTopic
         description: This is the input topic
         required: true
-        value: sentiment
+        value: chat-with-sentiment
       - name: PROJECT_ID
         inputType: FreeText
         description: The BigQuery GCP Project ID
@@ -134,20 +134,6 @@ deployments:
 
 # This section describes the Topics of the data pipeline
 topics:
-  - name: sentiment
-    persisted: true
-    configuration:
-      partitions: 2
-      replicationFactor: 2
-      retentionInMinutes: 60
-      retentionInBytes: 52428800
-  - name: messages
-    persisted: true
-    configuration:
-      partitions: 2
-      replicationFactor: 2
-      retentionInMinutes: 60
-      retentionInBytes: 52428800
   - name: drafts_sentiment
     persisted: true
     configuration:
