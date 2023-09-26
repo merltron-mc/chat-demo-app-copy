@@ -1,56 +1,55 @@
 import quixstreams as qx
-from quix_function import QuixFunction
-from transformers import pipeline
-import os
+from transformers import Pipeline
+import pandas as pd
+import re
 
-classifier = pipeline('sentiment-analysis')
+with open('banned_words.txt', 'r', encoding='ISO-8859-1') as f:
+    lines = f.readlines()[9:]  # Skip the first 9 lines
+    banned_words = ', '.join(lines).split(', ')
 
-# Quix injects credentials automatically to the client.
-# Alternatively, you can always pass an SDK token manually as an argument.
-client = qx.QuixStreamingClient('sdk-905f0c6001434d0e8e03f26c1a4b34e2')
+def censor_banned_words(text, banned_words):
+    for word in banned_words:
+        text = re.sub(re.escape(word), '*' * len(word), text, flags=re.IGNORECASE)
+    return text
 
-# Change consumer group to a different constant if you want to run model locally.
-print("Opening input and output topics")
+class QuixFunction:
+    def __init__(self, consumer_stream: qx.StreamConsumer, producer_stream: qx.StreamProducer, producer_stream_sanitized: qx.StreamProducer, classifier: Pipeline):
+        self.consumer_stream = consumer_stream
+        self.producer_stream = producer_stream
+        self.producer_stream_sanitized = producer_stream_sanitized  # New
+        self.classifier = classifier
+        self.sum = 0
+        self.count = 0
 
-consumer_topic = client.get_topic_consumer(
-    'messages',
-    "sentiment-analysis3",
-    auto_offset_reset = qx.AutoOffsetReset.Earliest)
+    # Callback triggered for each new parameter data.
+    def on_dataframe_handler(self, consumer_stream: qx.StreamConsumer, df_all_messages: pd.DataFrame):
 
-producer_topic = client.get_topic_producer(os.environ['output'])
-producer_topic_sanitized = client.get_topic_producer(os.environ['output_sanitized'])
+        # Sanitize text for message history
+        df_sanitized = df_all_messages.copy()
+        df_sanitized["chat-message"] = df_sanitized["chat-message"].apply(
+            lambda x: censor_banned_words(x, banned_words))
 
-# Callback called for each incoming stream
-def read_stream(consumer_stream: qx.StreamConsumer):
+        # Output sanitized data
+        print(f'sending sanitized: {df_sanitized["chat-message"][0]}')
+        self.producer_stream_sanitized.timeseries.publish(df_sanitized)
 
-    # Create a new stream to output data
-    producer_stream = producer_topic.get_or_create_stream(consumer_stream.stream_id)
-    producer_stream.properties.parents.append(consumer_stream.stream_id)
+        # Use the model to predict sentiment label and confidence score on received messages
+        model_response = self.classifier(list(df_all_messages["chat-message"]))
 
-    producer_sanitized_stream = producer_topic_sanitized.get_or_create_stream(consumer_stream.stream_id)
-    producer_sanitized_stream.properties.parents.append(consumer_stream.stream_id)
-    # handle the data in a function to simplify the example
-    quix_function = QuixFunction(consumer_stream, producer_stream, producer_sanitized_stream, classifier)
+        # Add the model response ("label" and "score") to the pandas dataframe
+        df = pd.concat([df_all_messages, pd.DataFrame(model_response)], axis = 1)
 
-    buffer = consumer_stream.timeseries.create_buffer()
-    buffer.time_span_in_milliseconds = 200
-    buffer.buffer_timeout = 200
+        # Iterate over the df to work on each message
+        for i, row in df.iterrows():
 
-    # React to new data received from input topic.
-    buffer.on_dataframe_released = quix_function.on_dataframe_handler
+            # Calculate "sentiment" feature using label for sign and score for magnitude
+            df.loc[i, "sentiment"] = row["score"] if row["label"] == "POSITIVE" else - row["score"]
 
-    # When input stream closes, we close output stream as well. 
-    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
-        producer_stream.close()
-        print("Stream closed:" + producer_stream.stream_id)
+            # Add average sentiment (and update memory)
+            self.count = self.count + 1
+            self.sum = self.sum + df.loc[i, "sentiment"]
+            df.loc[i, "average_sentiment"] = self.sum/self.count
 
-    consumer_stream.on_stream_closed = on_stream_close
-
-
-# Subscribe to events before initiating read to avoid losing out on any data
-consumer_topic.on_stream_received = read_stream
-
-print("Listening to streams. Press CTRL-C to exit.")
-
-# Handle graceful exit of the model.
-qx.App.run()
+            # Output data with new features
+            print(f'sending original message: {df["chat-message"][0]}')
+            self.producer_stream.timeseries.publish(df)
