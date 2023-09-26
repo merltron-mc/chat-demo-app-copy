@@ -94,6 +94,7 @@ export class QuixService {
         this.messagesTopic = this.stripLineFeed(this.workspaceId + '-' + messagesTopic);
         this.messagesSanitizedTopic = this.stripLineFeed(this.workspaceId + '-' + messagesSanitizedTopic);
         this.draftsTopic = this.stripLineFeed(this.workspaceId + '-' + draftTopic);
+        console.log('messagesSanitizedTopic:', messagesSanitizedTopic);
         this.sentimentTopic = this.stripLineFeed(this.workspaceId + '-' + sentimentTopic);
         this.draftsSentimentTopic = this.stripLineFeed(this.workspaceId + '-' + draftsSentimentTopic);
         this.token = token.replace('\n', '');
