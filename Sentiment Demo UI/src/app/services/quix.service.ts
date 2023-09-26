@@ -69,6 +69,7 @@ export class QuixService {
       const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
       let workspaceId$ = this.httpClient.get(this.server + 'workspace_id', {headers, responseType: 'text'});
       let messagesTopic$ = this.httpClient.get(this.server + 'messages_topic', {headers, responseType: 'text'});
+      console.log('Server URL:', this.server);
       let messagesSanitizedTopic$ = this.httpClient.get(this.server + 'messages_sanitized_topic', {headers, responseType: 'text'});
       let draftTopic$ = this.httpClient.get(this.server + 'drafts_topic', {headers, responseType: 'text'});
       let sentimentTopic$ = this.httpClient.get(this.server + 'sentiment_topic', {headers, responseType: 'text'});
