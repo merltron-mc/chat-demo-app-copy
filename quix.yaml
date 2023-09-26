@@ -9,7 +9,7 @@ deployments:
   - name: Sentiment Demo UI
     application: Sentiment Demo UI
     deploymentType: Service
-    version: 4e20e1e951adff069e61f4b1898f7521f09d3294
+    version: eveMoreLogging
     resources:
       cpu: 1000
       memory: 500
