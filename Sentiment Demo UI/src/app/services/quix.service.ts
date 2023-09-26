@@ -93,11 +93,11 @@ export class QuixService {
       value$.subscribe(({ workspaceId, messagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, messagesSanitizedTopic, token, portalApi }) => {
         this.workspaceId = this.stripLineFeed(workspaceId);
         this.messagesTopic = this.stripLineFeed(this.workspaceId + '-' + messagesTopic);
-        this.messagesSanitizedTopic = this.stripLineFeed(this.workspaceId + '-' + messagesSanitizedTopic);
         this.draftsTopic = this.stripLineFeed(this.workspaceId + '-' + draftTopic);
-        console.log('messagesSanitizedTopic:', messagesSanitizedTopic);
         this.sentimentTopic = this.stripLineFeed(this.workspaceId + '-' + sentimentTopic);
         this.draftsSentimentTopic = this.stripLineFeed(this.workspaceId + '-' + draftsSentimentTopic);
+        console.log('messagesSanitizedTopic:', messagesSanitizedTopic);
+        this.messagesSanitizedTopic = this.stripLineFeed(this.workspaceId + '-' + messagesSanitizedTopic);
         this.token = token.replace('\n', '');
 
         portalApi = portalApi.replace("\n", "");
