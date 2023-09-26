@@ -47,7 +47,7 @@ deployments:
   - name: Sentiment analysis
     application: Sentiment analysis
     deploymentType: Service
-    version: 7b069199f7306e9ee29587deb3aaef95bcf24274
+    version: addingCensorship
     resources:
       cpu: 2000
       memory: 4000
@@ -68,7 +68,7 @@ deployments:
         inputType: OutputTopic
         description: ''
         required: false
-        value: sentiment_clean
+        value: messages_sanitized
   - name: Drafts sentiment analysis
     application: Drafts sentiment analysis
     deploymentType: Service
