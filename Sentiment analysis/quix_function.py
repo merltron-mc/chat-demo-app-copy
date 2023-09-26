@@ -1,52 +1,56 @@
 import quixstreams as qx
-from transformers import Pipeline
-import pandas as pd
+from quix_function import QuixFunction
+from transformers import pipeline
+import os
 
-with open('banned_words.txt', 'r', encoding='ISO-8859-1') as f:
-    lines = f.readlines()[9:]  # Skip the first 9 lines
-    banned_words = ', '.join(lines).split(', ')
+classifier = pipeline('sentiment-analysis')
 
-def censor_banned_words(text, banned_words):
-    for word in banned_words:
-        if word in text:
-            text = text.replace(word, '*' * len(word))
-    return text
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient('sdk-905f0c6001434d0e8e03f26c1a4b34e2')
 
-class QuixFunction:
-    def __init__(self, consumer_stream: qx.StreamConsumer, producer_stream: qx.StreamProducer, producer_stream_sanitized: qx.StreamProducer, classifier: Pipeline):
-        self.consumer_stream = consumer_stream
-        self.producer_stream = producer_stream
-        self.classifier = classifier
-        self.producer_stream_sanitized = producer_stream_sanitized  # New
-        self.sum = 0
-        self.count = 0
+# Change consumer group to a different constant if you want to run model locally.
+print("Opening input and output topics")
 
-    # Callback triggered for each new parameter data.
-    def on_dataframe_handler(self, consumer_stream: qx.StreamConsumer, df_all_messages: pd.DataFrame):
+consumer_topic = client.get_topic_consumer(
+    'messages',
+    "sentiment-analysis3",
+    auto_offset_reset = qx.AutoOffsetReset.Earliest)
 
-        # Use the model to predict sentiment label and confidence score on received messages
-        model_response = self.classifier(list(df_all_messages["chat-message"]))
+producer_topic = client.get_topic_producer('sentiment')
+producer_topic_sanitized = client.get_topic_producer('messages_sanitized')
 
-        # Add the model response ("label" and "score") to the pandas dataframe
-        df = pd.concat([df_all_messages, pd.DataFrame(model_response)], axis = 1)
+# Callback called for each incoming stream
+def read_stream(consumer_stream: qx.StreamConsumer):
 
-        # Iterate over the df to work on each message
-        for i, row in df.iterrows():
+    # Create a new stream to output data
+    producer_stream = producer_topic.get_or_create_stream(consumer_stream.stream_id)
+    producer_stream.properties.parents.append(consumer_stream.stream_id)
 
-            # Calculate "sentiment" feature using label for sign and score for magnitude
-            df.loc[i, "sentiment"] = row["score"] if row["label"] == "POSITIVE" else - row["score"]
+    producer_sanitized_stream = producer_topic_sanitized.get_or_create_stream(consumer_stream.stream_id)
+    producer_sanitized_stream.properties.parents.append(consumer_stream.stream_id)
+    # handle the data in a function to simplify the example
+    quix_function = QuixFunction(consumer_stream, producer_stream, producer_sanitized_stream, classifier)
 
-            # Add average sentiment (and update memory)
-            self.count = self.count + 1
-            self.sum = self.sum + df.loc[i, "sentiment"]
-            df.loc[i, "average_sentiment"] = self.sum/self.count
+    buffer = consumer_stream.timeseries.create_buffer()
+    buffer.time_span_in_milliseconds = 200
+    buffer.buffer_timeout = 200
 
-            # Output data with new features
-            self.producer_stream.timeseries.publish(df)
+    # React to new data received from input topic.
+    buffer.on_dataframe_released = quix_function.on_dataframe_handler
 
-            # Sanitize text after sentiment analysis
-            df_sanitized = df.copy()
-            df_sanitized["chat-message"] = df_sanitized["chat-message"].apply(lambda x: censor_banned_words(x, banned_words))
+    # When input stream closes, we close output stream as well. 
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
+        producer_stream.close()
+        print("Stream closed:" + producer_stream.stream_id)
 
-            # Output sanitized data
-            self.producer_stream_sanitized.timeseries.publish(df_sanitized)
+    consumer_stream.on_stream_closed = on_stream_close
+
+
+# Subscribe to events before initiating read to avoid losing out on any data
+consumer_topic.on_stream_received = read_stream
+
+print("Listening to streams. Press CTRL-C to exit.")
+
+# Handle graceful exit of the model.
+qx.App.run()
