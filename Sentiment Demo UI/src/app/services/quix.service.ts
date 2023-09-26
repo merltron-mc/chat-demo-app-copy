@@ -97,7 +97,8 @@ export class QuixService {
         this.sentimentTopic = this.stripLineFeed(this.workspaceId + '-' + sentimentTopic);
         this.draftsSentimentTopic = this.stripLineFeed(this.workspaceId + '-' + draftsSentimentTopic);
         console.log('messagesSanitizedTopic:', messagesSanitizedTopic);
-        this.messagesSanitizedTopic = this.stripLineFeed(this.workspaceId + '-' + messagesSanitizedTopic);
+        //this.messagesSanitizedTopic = this.stripLineFeed(this.workspaceId + '-' + messagesSanitizedTopic);
+        this.messagesSanitizedTopic = 'demo-mychatapp-develop-messages_sanitized';
         this.token = token.replace('\n', '');
 
         portalApi = portalApi.replace("\n", "");
