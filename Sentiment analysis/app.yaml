@@ -14,7 +14,7 @@ variables:
   - name: output_sanitized
     inputType: OutputTopic
     description: ''
-    defaultValue: sentiment_clean
+    defaultValue: messages_sanitized
     required: false
 dockerfile: build/dockerfile
 runEntryPoint: main.py
