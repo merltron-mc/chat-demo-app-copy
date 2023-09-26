@@ -226,9 +226,11 @@ export class QuixService {
    * @param parameterId The parameter want to listen for changes.
    */
   public subscribeToParameter(topic: string, streamId: string, parameterId: string) {
-    // console.log(`QuixService Reader | Subscribing to parameter - ${topic}, ${streamId}, ${parameterId}`);
-    this.readerHubConnection.invoke("SubscribeToParameter", topic, streamId, parameterId);
-  }
+    console.log(`QuixService Reader | Subscribing to parameter - ${topic}, ${streamId}, ${parameterId}`);
+      this.readerHubConnection.invoke("SubscribeToParameter", topic, streamId, parameterId)
+    .catch(err => console.error(`Error subscribing to parameter ${parameterId} on topic ${topic} and stream ${streamId}:`, err));
+}
+
 
   /**
    * Unsubscribe from a parameter on the ReaderHub connection
@@ -239,9 +241,10 @@ export class QuixService {
    * @param parameterId 
    */
   public unsubscribeFromParameter(topic: string, streamId: string, parameterId: string) {
-    // console.log(`QuixService Reader | Unsubscribing from parameter - ${topic}, ${streamId}, ${parameterId}`);
-    this.readerHubConnection.invoke("UnsubscribeFromParameter", topic, streamId, parameterId);
-  }
+    console.log(`QuixService Reader | Unsubscribing from parameter - ${topic}, ${streamId}, ${parameterId}`);
+    this.readerHubConnection.invoke("UnsubscribeFromParameter", topic, streamId, parameterId)
+    .catch(err => console.error(`Error unsubscribing from parameter ${parameterId} on topic ${topic} and stream ${streamId}:`, err));
+}
 
   /**
    * Sends parameter data to Quix using the WriterHub connection.
