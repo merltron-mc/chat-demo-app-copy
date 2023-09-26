@@ -173,14 +173,14 @@ export class WebChatComponent implements OnInit {
       this.usersTyping.set(name, user);
     }
 
-    if (topicId === this.quixService.messagesTopic) {
-       // If the user is in the typing map then remove them
-       if (user) {
+    if (topicId === this.quixService.messagesSanitizedTopic) {
+    // If the user is in the typing map then remove them
+    if (user) {
         user?.timeout?.unsubscribe();
-         this.usersTyping.delete(name);
-       } 
-       // Push the new message
-       this.messages.push({timestamp, name, profilePic, profilePicColor, sentiment, value });
+        this.usersTyping.delete(name);
+    } 
+    // Push the new message
+    this.messages.push({timestamp, name, profilePic, profilePicColor, sentiment, value });
     }
 
     if (topicId === this.quixService.sentimentTopic) {
