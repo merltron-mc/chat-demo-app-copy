@@ -47,7 +47,7 @@ deployments:
   - name: Sentiment analysis
     application: Sentiment analysis
     deploymentType: Service
-    version: addingCensorship
+    version: wordboundaries
     resources:
       cpu: 2000
       memory: 4000
