@@ -75,7 +75,8 @@ export class QuixService {
       let draftTopic$ = this.httpClient.get(this.server + 'drafts_topic', {headers, responseType: 'text'});
       let sentimentTopic$ = this.httpClient.get(this.server + 'sentiment_topic', {headers, responseType: 'text'});
       let draftsSentimentTopic$ = this.httpClient.get(this.server + 'drafts_sentiment_topic', {headers, responseType: 'text'});
-      let token$ = this.httpClient.get(this.server + 'sdk_token', {headers, responseType: 'text'});
+      // removed in main
+      // let token$ = this.httpClient.get(this.server + 'sdk_token', {headers, responseType: 'text'}); 
       let portalApi$ = this.httpClient.get(this.server + "portal_api", {headers, responseType: 'text'})
 
       let value$ = combineLatest([
