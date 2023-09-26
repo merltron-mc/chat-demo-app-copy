@@ -47,7 +47,7 @@ deployments:
       cpu: 2000
       memory: 4000
       replicas: 4
-    desiredStatus: Running
+    desiredStatus: Stopped
     variables:
       - name: input
         inputType: InputTopic
@@ -174,14 +174,14 @@ topics:
       retentionInMinutes: -1
       retentionInBytes: 262144000
   - name: chat-messages
-    persisted: true
+    persisted: false
     configuration:
       partitions: 8
       replicationFactor: 2
       retentionInMinutes: 120
       retentionInBytes: 524288000
   - name: chat-with-sentiment
-    persisted: true
+    persisted: false
     configuration:
       partitions: 8
       replicationFactor: 2
