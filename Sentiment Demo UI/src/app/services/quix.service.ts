@@ -17,6 +17,7 @@ export enum ConnectionStatus {
   providedIn: 'root'
 })
 export class QuixService {
+  public ungatedToken: string = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qVTBRVE01TmtJNVJqSTNOVEpFUlVSRFF6WXdRVFF4TjBSRk56SkNNekpFUWpBNFFqazBSUSJ9.eyJodHRwczovL3F1aXguYWkvb3JnX2lkIjoiZGVtbyIsImh0dHBzOi8vcXVpeC5haS9vd25lcl9pZCI6ImF1dGgwfDI4YWQ4NWE4LWY1YjctNGFjNC1hZTVkLTVjYjY3OGIxYjA1MiIsImh0dHBzOi8vcXVpeC5haS90b2tlbl9pZCI6ImMzNzljNmVlLWNkMmYtNDExZC1iOGYyLTMyMDU0ZDc5MTY2YSIsImh0dHBzOi8vcXVpeC5haS9leHAiOiIxNzM3ODI5NDc5LjIyMyIsImlzcyI6Imh0dHBzOi8vYXV0aC5xdWl4LmFpLyIsInN1YiI6ImtyMXU4MGRqRllvUUZlb01nMGhqcXZia29lRkxFRDVBQGNsaWVudHMiLCJhdWQiOiJxdWl4IiwiaWF0IjoxNjk1NzE2MDI4LCJleHAiOjE2OTgzMDgwMjgsImF6cCI6ImtyMXU4MGRqRllvUUZlb01nMGhqcXZia29lRkxFRDVBIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOltdfQ.Ndm0K2iNHPxDq1ohF-yb-6LzIqx_UY8Ptcq0kAwSNye12S3deX_eDkC4XqZqW2NoSLd3GsmWV9PZGetGGp2IlqshQFZtUMp6WP6hq917ZC1i8JFx93PAbY7NT_88nFDovVlaRcoTpWvI-03KbryLkAoB28c6qb3EFwjCWFBuy_yA4yjQ8uF0-AZ0R9Qi4IBaekXWqcgO0a91gVRg0oA_hnzJFoR-EnZ2G1ZSxtuVgnyyPuQTMUvzJuUT_IJTLzEB_kejX0pcXRZBIwHP8MWLB4mE5DtIdz4jm8WIA4eZJZ7ZCG4dk-adQwZ2BdkNknV5eEwRgRJL4ybaplkaDlR-dg';
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
   /*WORKING LOCALLY? UPDATE THESE!*/
@@ -26,7 +27,7 @@ export class QuixService {
   public messagesTopic: string = 'messages'; // get topic name from the Topics page
   public messagesSanitizedTopic: string = 'messages_sanitized'; // get topic name from the Topics page
   public draftsTopic: string = 'drafts'; // get topic from the Topics page
-  public sentimentTopic: string = 'sentiment'; // get topic name from the Topics page
+  public sentimentTopic: string = 'chat-with-sentiment'; // get topic name from the Topics page
   public draftsSentimentTopic: string = 'drafts_sentiment'; // get topic name from the Topics page
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
@@ -74,7 +75,6 @@ export class QuixService {
       let draftTopic$ = this.httpClient.get(this.server + 'drafts_topic', {headers, responseType: 'text'});
       let sentimentTopic$ = this.httpClient.get(this.server + 'sentiment_topic', {headers, responseType: 'text'});
       let draftsSentimentTopic$ = this.httpClient.get(this.server + 'drafts_sentiment_topic', {headers, responseType: 'text'});
-      let token$ = this.httpClient.get(this.server + 'sdk_token', {headers, responseType: 'text'});
       let portalApi$ = this.httpClient.get(this.server + "portal_api", {headers, responseType: 'text'})
 
       let value$ = combineLatest([
