@@ -187,3 +187,10 @@ topics:
       replicationFactor: 2
       retentionInMinutes: 120
       retentionInBytes: 1000000
+  - name: messages_sanitized
+    persisted: false
+    configuration:
+      partitions: 2
+      replicationFactor: 2
+      retentionInMinutes: 60
+      retentionInBytes: 52428800
