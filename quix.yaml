@@ -9,7 +9,7 @@ deployments:
   - name: Chat sentiment analysis UI
     application: Sentiment Demo UI
     deploymentType: Service
-    version: 6ae28895789f1379615369b314a4badc68eca633
+    version: addedTutFiles
     resources:
       cpu: 500
       memory: 500
