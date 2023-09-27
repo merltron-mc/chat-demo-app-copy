@@ -164,26 +164,26 @@ topics:
     configuration:
       partitions: 2
       replicationFactor: 2
-      retentionInMinutes: -1
-      retentionInBytes: 262144000
+      retentionInMinutes: 120
+      retentionInBytes: 1000000
   - name: drafts_sentiment
     persisted: false
     configuration:
       partitions: 2
       replicationFactor: 2
-      retentionInMinutes: -1
-      retentionInBytes: 262144000
+      retentionInMinutes: 120
+      retentionInBytes: 1000000
   - name: chat-messages
     persisted: false
     configuration:
       partitions: 8
-      replicationFactor: 2
+      replicationFactor: 120
       retentionInMinutes: 120
-      retentionInBytes: 524288000
+      retentionInBytes: 1000000
   - name: chat-with-sentiment
     persisted: false
     configuration:
       partitions: 8
-      replicationFactor: 2
+      replicationFactor: 120
       retentionInMinutes: 120
-      retentionInBytes: 524288000
+      retentionInBytes: 1000000
