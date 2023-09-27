@@ -197,6 +197,7 @@ export class RoomService {
     this.quixService.subscribeToParameter(this.quixService.draftsTopic, roomName, "*");
     this.quixService.subscribeToParameter(this.quixService.sentimentTopic, roomName, "*");
     this.quixService.subscribeToParameter(this.quixService.draftsSentimentTopic, roomName, "*");
+    this.quixService.subscribeToParameter(this.quixService.messagesSanitizedTopic, roomName, "*"); // addition for tutorial
   }
 
   /**
@@ -210,6 +211,7 @@ export class RoomService {
     this.quixService.unsubscribeFromParameter(this.quixService.draftsTopic, roomName, "*");
     this.quixService.unsubscribeFromParameter(this.quixService.sentimentTopic, roomName, "*");
     this.quixService.unsubscribeFromParameter(this.quixService.draftsSentimentTopic, roomName, "*");
+    this.quixService.unsubscribeFromParameter(this.quixService.messagesSanitizedTopic, roomName, "*"); // addition for tutorial
 
   }
 
