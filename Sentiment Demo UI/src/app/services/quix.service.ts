@@ -25,6 +25,7 @@ export class QuixService {
   private token: string = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qVTBRVE01TmtJNVJqSTNOVEpFUlVSRFF6WXdRVFF4TjBSRk56SkNNekpFUWpBNFFqazBSUSJ9.eyJodHRwczovL3F1aXguYWkvb3JnX2lkIjoiZGVtbyIsImh0dHBzOi8vcXVpeC5haS9vd25lcl9pZCI6ImF1dGgwfGM1M2QzMzIxLTgwZDItNGQzYS1hNmU3LTdmYjY1NGM5YzJmMiIsImh0dHBzOi8vcXVpeC5haS90b2tlbl9pZCI6IjNjYzFjMTZhLTVlNmEtNGYwMC1iODhhLThhYzE5MzkwMDdlYiIsImh0dHBzOi8vcXVpeC5haS9leHAiOiIyMDk5MjU3MjAwIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnF1aXguYWkvIiwic3ViIjoiV3lmT3lRSmQ3Mk94WkJQQmRMUlpiVlYwSWVma0JyVXpAY2xpZW50cyIsImF1ZCI6InF1aXgiLCJpYXQiOjE2OTUxMjE2OTYsImV4cCI6MTY5NzcxMzY5NiwiYXpwIjoiV3lmT3lRSmQ3Mk94WkJQQmRMUlpiVlYwSWVma0JyVXoiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6W119.b_6WtwsjuQklXeZA7TpUmWbOQ9xr0bpJ_3xfyZjSc0lLVhH3aAUrci1ofUFajTOCkes-6uhe_Bu9zD5fQimpKvCJ4fplIjRGXQSuFz9aiH2AOUZD2BOLaQZipmzgEjkNnomqwLCuE3f8Q2026lm3B685XHCHt7YiCHt3JdW4yOVjiJZjAfNd4stJUtAWeTUl7og1gN9SuBMQ9Z3zHjO2TBQieQ2xAI812MbAaGDd7TWKkvPlMgdxApe6bu5nMCaE7_HLrSGNBKnkQ_Z_TTFiW_e9yaAmOojtANn2Jx21-OWfEg9aG8-FcoNSjkCaD3JTSTk0MNHEEuLGmpowxzZmGg'; // Create a token in the Tokens menu and paste it here
   public workspaceId: string = 'demo-chatappdemo-prod'; // Look in the URL for the Quix Portal your workspace ID is after 'workspace='
   public messagesTopic: string = 'chat-messages'; // get topic name from the Topics page
+  public messagesSanitizedTopic: string = 'messages_sanitized'; // new adddition for tutorial
   public draftsTopic: string = 'drafts'; // get topic from the Topics page
   public sentimentTopic: string = 'chat-with-sentiment'; // get topic name from the Topics page
   public draftsSentimentTopic: string = 'drafts_sentiment'; // get topic name from the Topics page
@@ -72,6 +73,7 @@ export class QuixService {
       let draftTopic$ = this.httpClient.get(this.server + 'drafts_topic', {headers, responseType: 'text'});
       let sentimentTopic$ = this.httpClient.get(this.server + 'sentiment_topic', {headers, responseType: 'text'});
       let draftsSentimentTopic$ = this.httpClient.get(this.server + 'drafts_sentiment_topic', {headers, responseType: 'text'});
+      let messagesSanitizedTopic$ = this.httpClient.get(this.server + 'messages_sanitized_topic', {headers, responseType: 'text'}); // new adddition for tutorial
       let portalApi$ = this.httpClient.get(this.server + "portal_api", {headers, responseType: 'text'})
 
       let value$ = combineLatest([
@@ -80,6 +82,7 @@ export class QuixService {
         draftTopic$,
         sentimentTopic$,
         draftsSentimentTopic$,
+        messagesSanitizedTopic$,
         portalApi$
       ]).pipe(map(([workspaceId, messagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, portalApi]) => {
         return {workspaceId, messagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, portalApi};
@@ -91,7 +94,8 @@ export class QuixService {
         this.draftsTopic = this.stripLineFeed(this.workspaceId + '-' + draftTopic);
         this.sentimentTopic = this.stripLineFeed(this.workspaceId + '-' + sentimentTopic);
         this.draftsSentimentTopic = this.stripLineFeed(this.workspaceId + '-' + draftsSentimentTopic);
-
+        this.messagesSanitizedTopic = this.stripLineFeed(this.workspaceId + '-' + messagesSanitizedTopic);  // new adddition for tutorial
+       
         portalApi = portalApi.replace("\n", "");
         let matches = portalApi.match(this.domainRegex);
         if(matches) {
@@ -272,4 +276,3 @@ export class QuixService {
   }
 
 }
-
