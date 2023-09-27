@@ -4,7 +4,7 @@
 metadata:
   version: 1.0
 
-# This section describes the Deployments of the data pipeline
+# This section describes the deployments of the data pipeline
 deployments:
   - name: Chat sentiment analysis UI
     application: Sentiment Demo UI
