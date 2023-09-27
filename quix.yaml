@@ -9,7 +9,7 @@ deployments:
   - name: Chat sentiment analysis UI
     application: Sentiment Demo UI
     deploymentType: Service
-    version: addedTutFiles
+    version: 6ae28895789f1379615369b314a4badc68eca633
     resources:
       cpu: 500
       memory: 500
@@ -17,7 +17,7 @@ deployments:
     publicAccess:
       enabled: true
       urlPrefix: sentimentdemoui
-    desiredStatus: Running
+    desiredStatus: Stopped
     variables:
       - name: sentiment
         inputType: FreeText
