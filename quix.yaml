@@ -11,7 +11,7 @@ deployments:
     deploymentType: Service
     version: 6ae28895789f1379615369b314a4badc68eca633
     resources:
-      cpu: 1000
+      cpu: 500
       memory: 500
       replicas: 1
     publicAccess:
@@ -44,7 +44,7 @@ deployments:
     deploymentType: Service
     version: d49be638a568e2d209ec50a8eb2c6e2efbcc1e0f
     resources:
-      cpu: 2000
+      cpu: 500
       memory: 4000
       replicas: 1
     desiredStatus: Stopped
@@ -64,7 +64,7 @@ deployments:
     deploymentType: Service
     version: dsa-v1-dev1
     resources:
-      cpu: 2000
+      cpu: 500
       memory: 4000
       replicas: 1
     state:
@@ -87,7 +87,7 @@ deployments:
     deploymentType: Service
     version: bigquery-v1
     resources:
-      cpu: 1000
+      cpu: 500
       memory: 1000
       replicas: 1
     desiredStatus: Stopped
@@ -126,7 +126,7 @@ deployments:
     deploymentType: Service
     version: b1bd9106b18a6da5c38f99b02dfdd7f5920bc2d6
     resources:
-      cpu: 2000
+      cpu: 500
       memory: 1000
       replicas: 1
     desiredStatus: Stopped
