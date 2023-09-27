@@ -176,14 +176,14 @@ topics:
   - name: chat-messages
     persisted: false
     configuration:
-      partitions: 8
+      partitions: 2
       replicationFactor: 120
       retentionInMinutes: 120
       retentionInBytes: 1000000
   - name: chat-with-sentiment
     persisted: false
     configuration:
-      partitions: 8
+      partitions: 2
       replicationFactor: 120
       retentionInMinutes: 120
       retentionInBytes: 1000000
