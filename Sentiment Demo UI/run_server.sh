@@ -6,4 +6,5 @@ echo "${sentiment}" > /usr/share/nginx/html/sentiment_topic
 echo "${messages}" > /usr/share/nginx/html/messages_topic
 echo "${drafts}" > /usr/share/nginx/html/drafts_topic
 echo "${drafts_sentiment}" > /usr/share/nginx/html/drafts_sentiment_topic
+echo "${messages_sanitized}" > /usr/share/nginx/html/messages_sanitized_topic
 nginx -g "daemon off;"
