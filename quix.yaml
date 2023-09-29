@@ -161,34 +161,34 @@ deployments:
 
 # This section describes the Topics of the data pipeline
 topics:
-  - name: drafts
-    persisted: false
-    configuration:
-      partitions: 2
-      replicationFactor: 2
-      retentionInMinutes: 120
-      retentionInBytes: 1000000
   - name: drafts_sentiment
     persisted: false
     configuration:
       partitions: 2
       replicationFactor: 2
-      retentionInMinutes: 120
-      retentionInBytes: 1000000
+      retentionInMinutes: -1
+      retentionInBytes: 262144000
+  - name: drafts
+    persisted: true
+    configuration:
+      partitions: 2
+      replicationFactor: 2
+      retentionInMinutes: -1
+      retentionInBytes: 262144000
   - name: chat-messages
     persisted: false
     configuration:
-      partitions: 2
+      partitions: 8
       replicationFactor: 2
       retentionInMinutes: 120
-      retentionInBytes: 1000000
+      retentionInBytes: 524288000
   - name: chat-with-sentiment
     persisted: false
     configuration:
-      partitions: 2
+      partitions: 8
       replicationFactor: 2
       retentionInMinutes: 120
-      retentionInBytes: 1000000
+      retentionInBytes: 524288000
   - name: messages_sanitized
     persisted: false
     configuration:
