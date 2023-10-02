@@ -6,44 +6,6 @@ metadata:
 
 # This section describes the Deployments of the data pipeline
 deployments:
-  - name: Chat sentiment analysis UI
-    application: Sentiment Demo UI
-    deploymentType: Service
-    version: updatedServers
-    resources:
-      cpu: 1000
-      memory: 500
-      replicas: 1
-    publicAccess:
-      enabled: true
-      urlPrefix: sentimentdemoui
-    desiredStatus: Running
-    variables:
-      - name: sentiment
-        inputType: FreeText
-        description: The topic to read from
-        required: true
-        value: chat-with-sentiment
-      - name: messages
-        inputType: FreeText
-        description: The topic to read from
-        required: true
-        value: chat-messages
-      - name: drafts
-        inputType: FreeText
-        description: ''
-        required: true
-        value: drafts
-      - name: drafts_sentiment
-        inputType: FreeText
-        description: ''
-        required: false
-        value: drafts_sentiment
-      - name: messages_sanitized
-        inputType: FreeText
-        description: ''
-        required: false
-        value: messages_sanitized
   - name: Sentiment analysis
     application: Sentiment analysis
     deploymentType: Service
@@ -131,6 +93,44 @@ deployments:
         description: Max queue size for the sink ingestion
         required: true
         value: 50
+  - name: Chat sentiment analysis UI
+    application: Sentiment Demo UI
+    deploymentType: Service
+    version: updatedServers
+    resources:
+      cpu: 1000
+      memory: 500
+      replicas: 1
+    publicAccess:
+      enabled: true
+      urlPrefix: sentimentdemoui
+    desiredStatus: Running
+    variables:
+      - name: sentiment
+        inputType: FreeText
+        description: The topic to read from
+        required: true
+        value: chat-with-sentiment
+      - name: messages
+        inputType: FreeText
+        description: The topic to read from
+        required: true
+        value: chat-messages
+      - name: drafts
+        inputType: FreeText
+        description: ''
+        required: true
+        value: drafts
+      - name: drafts_sentiment
+        inputType: FreeText
+        description: ''
+        required: false
+        value: drafts_sentiment
+      - name: messages_sanitized
+        inputType: FreeText
+        description: ''
+        required: false
+        value: messages_sanitized
 
 # This section describes the Topics of the data pipeline
 topics:
@@ -162,3 +162,10 @@ topics:
       replicationFactor: 2
       retentionInMinutes: 60
       retentionInBytes: 52428800
+  - name: messages
+    persisted: false
+    configuration:
+      partitions: 2
+      replicationFactor: 2
+      retentionInMinutes: -1
+      retentionInBytes: 1048576000
