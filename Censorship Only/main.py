@@ -1,9 +1,8 @@
 import quixstreams as qx
 from quix_function import QuixFunction
-from transformers import pipeline
 import os
 
-classifier = pipeline('sentiment-analysis')
+#classifier = pipeline('sentiment-analysis')
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
@@ -30,7 +29,7 @@ def read_stream(consumer_stream: qx.StreamConsumer):
     producer_sanitized_stream = producer_topic_sanitized.get_or_create_stream(consumer_stream.stream_id)
     producer_sanitized_stream.properties.parents.append(consumer_stream.stream_id)
     # handle the data in a function to simplify the example
-    quix_function = QuixFunction(consumer_stream, producer_stream, producer_sanitized_stream, classifier)
+    quix_function = QuixFunction(consumer_stream, producer_stream, producer_sanitized_stream)
 
     buffer = consumer_stream.timeseries.create_buffer()
     buffer.time_span_in_milliseconds = 200
