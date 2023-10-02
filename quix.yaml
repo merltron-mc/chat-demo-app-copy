@@ -166,6 +166,31 @@ deployments:
         description: ''
         required: false
         value: messages_sanitized
+  - name: Censorship Only
+    application: Censorship Only
+    deploymentType: Service
+    version: f75d4f1de3d2698b5c6f07daf0f00f4dc7bdc2e7
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: input
+        inputType: InputTopic
+        description: This is the raw data input topic
+        required: true
+        value: chat-messages
+      - name: output
+        inputType: OutputTopic
+        description: This is the output for the Hugging Face model score
+        required: true
+        value: chat-with-sentiment
+      - name: output2
+        inputType: InputTopic
+        description: ''
+        required: false
+        value: messages_sanitized
 
 # This section describes the Topics of the data pipeline
 topics:
