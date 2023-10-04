@@ -16,6 +16,11 @@ variables:
     description: ''
     defaultValue: 0
     required: true
+  - name: output_sanitized
+    inputType: OutputTopic
+    description: ''
+    defaultValue: messages_sanitized
+    required: false
 dockerfile: build/dockerfile
 runEntryPoint: main.py
 defaultFile: quix_function.py
