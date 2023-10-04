@@ -41,5 +41,10 @@ variables:
     description: ''
     defaultValue: bearerToken
     required: true
+  - name: messages_sanitized
+    inputType: FreeText
+    description: ''
+    defaultValue: messages_sanitized
+    required: false
 dockerfile: src/build/dockerfile
 defaultFile: src/app/services/quix.service.ts
