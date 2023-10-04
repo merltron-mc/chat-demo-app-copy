@@ -142,7 +142,7 @@ deployments:
     version: 1d8951cf90f6c2dabfadb04768a019a798589cea
     resources:
       cpu: 400
-      memory: 500
+      memory: 1000
       replicas: 1
     desiredStatus: Stopped
     variables:
