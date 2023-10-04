@@ -136,7 +136,7 @@ deployments:
   - name: Project Front End
     application: Sentiment Demo UI
     deploymentType: Service
-    version: d13785267bc942b698b1abb9b6b65a55f014d876
+    version: TutorialChanges
     resources:
       cpu: 500
       memory: 500
@@ -186,6 +186,11 @@ deployments:
         description: ''
         required: true
         value: bearerToken
+      - name: messages_sanitized
+        inputType: FreeText
+        description: ''
+        required: false
+        value: messages_sanitized
   - name: Twitch Sentiment Analysis
     application: Sentiment analysis
     deploymentType: Service
