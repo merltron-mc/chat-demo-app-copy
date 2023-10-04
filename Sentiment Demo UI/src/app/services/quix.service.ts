@@ -31,6 +31,7 @@ export class QuixService {
   public twitchMessagesTopic: string = 'twitch-messages'; // get topic name from the Topics page
   public draftsTopic: string = 'drafts'; // get topic from the Topics page
   public sentimentTopic: string = 'chat-with-sentiment'; // get topic name from the Topics page
+  public messagesSanitizedTopic: string = 'messages_sanitized'; // new adddition for tutorial
   public draftsSentimentTopic: string = 'drafts_sentiment'; // get topic name from the Topics page
 
   /* optional */
@@ -85,6 +86,7 @@ export class QuixService {
       let draftTopic$ = this.httpClient.get(this.server + 'drafts_topic', {headers, responseType: 'text'});
       let sentimentTopic$ = this.httpClient.get(this.server + 'sentiment_topic', {headers, responseType: 'text'});
       let draftsSentimentTopic$ = this.httpClient.get(this.server + 'drafts_sentiment_topic', {headers, responseType: 'text'});
+      let messagesSanitizedTopic$ = this.httpClient.get(this.server + 'messages_sanitized_topic', {headers, responseType: 'text'}); // new adddition for tutorial
       let portalApi$ = this.httpClient.get(this.server + "portal_api", {headers, responseType: 'text'})
 
       // if the solution is deployed in the platform. as part of the ungated / demo experience, set these so the links work correctly.
@@ -104,16 +106,17 @@ export class QuixService {
         draftTopic$,
         sentimentTopic$,
         draftsSentimentTopic$,
+        messagesSanitizedTopic$,
 
         // Deployments
         sentimentAnalysisDeploymentId$,
         twitchSentimentAnalysisDeploymentId$
 
-      ]).pipe(map(([bearerToken, workspaceId,  portalApi, messagesTopic, twitchMessagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, sentimentAnalysisDeploymentId, twitchSentimentAnalysisDeploymentId]) => {
-        return {bearerToken, workspaceId, portalApi, messagesTopic, twitchMessagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, sentimentAnalysisDeploymentId, twitchSentimentAnalysisDeploymentId};
+      ]).pipe(map(([bearerToken, workspaceId,  portalApi, messagesTopic, twitchMessagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, messagesSanitizedTopic, sentimentAnalysisDeploymentId, twitchSentimentAnalysisDeploymentId]) => {
+        return {bearerToken, workspaceId, portalApi, messagesTopic, twitchMessagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, messagesSanitizedTopic, sentimentAnalysisDeploymentId, twitchSentimentAnalysisDeploymentId};
       }));
 
-      value$.subscribe(({ bearerToken, workspaceId, portalApi, messagesTopic, twitchMessagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, sentimentAnalysisDeploymentId, twitchSentimentAnalysisDeploymentId }) => {
+      value$.subscribe(({ bearerToken, workspaceId, portalApi, messagesTopic, twitchMessagesTopic, draftTopic, sentimentTopic, draftsSentimentTopic, messagesSanitizedTopic, sentimentAnalysisDeploymentId, twitchSentimentAnalysisDeploymentId }) => {
         this.token = this.stripLineFeed(bearerToken);
         this.workspaceId = this.stripLineFeed(workspaceId);
         this.messagesTopic = this.stripLineFeed(this.workspaceId + '-' + messagesTopic);
@@ -123,6 +126,7 @@ export class QuixService {
         this.draftsSentimentTopic = this.stripLineFeed(this.workspaceId + '-' + draftsSentimentTopic);
         this.sentimentAnalysisDeploymentId = this.stripLineFeed(this.workspaceId + '-' + sentimentAnalysisDeploymentId);
         this.twitchSentimentAnalysisDeploymentId = this.stripLineFeed(this.workspaceId + '-' + twitchSentimentAnalysisDeploymentId);
+        this.messagesSanitizedTopic = this.stripLineFeed(this.workspaceId + '-' + messagesSanitizedTopic); 
 
         portalApi = portalApi.replace("\n", "");
         let matches = portalApi.match(this.domainRegex);
