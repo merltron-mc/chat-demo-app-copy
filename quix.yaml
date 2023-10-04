@@ -34,7 +34,7 @@ deployments:
   - name: Drafts sentiment analysis
     application: Drafts sentiment analysis
     deploymentType: Service
-    version: dsa-v1-dev1
+    version: d49be638a568e2d209ec50a8eb2c6e2efbcc1e0f
     resources:
       cpu: 2000
       memory: 4000
