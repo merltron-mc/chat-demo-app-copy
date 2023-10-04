@@ -229,18 +229,18 @@ topics:
       partitions: 2
       replicationFactor: 2
       retentionInMinutes: 120
-      retentionInBytes: 524288000
+      retentionInBytes: 262144000
   - name: chat-with-sentiment
     persisted: true
     configuration:
       partitions: 2
       replicationFactor: 2
       retentionInMinutes: 120
-      retentionInBytes: 524288000
+      retentionInBytes: 262144000
   - name: twitch-messages
     persisted: false
     configuration:
       partitions: 4
       replicationFactor: 2
       retentionInMinutes: 60
-      retentionInBytes: 52428800
+      retentionInBytes: 262144000
