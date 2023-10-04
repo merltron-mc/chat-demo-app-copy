@@ -240,7 +240,7 @@ topics:
   - name: twitch-messages
     persisted: false
     configuration:
-      partitions: 4
+      partitions: 2
       replicationFactor: 2
       retentionInMinutes: 60
       retentionInBytes: 52428800
