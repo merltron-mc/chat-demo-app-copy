@@ -11,7 +11,7 @@ deployments:
     deploymentType: Service
     version: sa-v2.0
     resources:
-      cpu: 800
+      cpu: 500
       memory: 1000
       replicas: 2
     desiredStatus: Running
@@ -36,7 +36,7 @@ deployments:
     deploymentType: Service
     version: d49be638a568e2d209ec50a8eb2c6e2efbcc1e0f
     resources:
-      cpu: 800
+      cpu: 500
       memory: 1000
       replicas: 1
     state:
